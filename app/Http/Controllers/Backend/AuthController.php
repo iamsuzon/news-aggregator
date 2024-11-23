@@ -22,7 +22,7 @@ class AuthController extends Controller
         ]);
 
         if ($validated->fails()) {
-            return response()->json(['errors' => $validated->errors()]);
+            return response()->json(['errors' => $validated->errors()], 422);
         }
 
         $data = $validated->validated();
@@ -33,7 +33,7 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        return response()->json(['token' => $user->createToken('API Token')->plainTextToken]);
+        return response()->json(['token' => $user->createToken('API Token')->plainTextToken], 201);
     }
 
     public function login(Request $request)
@@ -44,7 +44,7 @@ class AuthController extends Controller
         ]);
 
         if ($validated->fails()) {
-            return response()->json(['errors' => $validated->errors()]);
+            return response()->json(['errors' => $validated->errors()], 422);
         }
 
         $data = $validated->validated();
