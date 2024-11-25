@@ -14,7 +14,7 @@ class ArticleManageController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Article::with(['category', 'source'])->where('status', true);
+        $query = Article::with(['category', 'source', 'author'])->where('status', true);
 
         if ($request->has('keyword')) {
             $query->where('title', 'like', '%' . $request->keyword . '%');

@@ -52,6 +52,9 @@ class UserPreferenceController extends Controller
             ]
         );
 
-        return response()->json($preferences, Response::HTTP_CREATED);
+        return response()->json([
+            'message' => 'Preferences updated successfully',
+            'preferences' => $preferences
+        ], Response::HTTP_CREATED);
     }
 }

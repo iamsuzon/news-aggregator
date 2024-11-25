@@ -34,7 +34,7 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        return response()->json(['token' => $user->createToken('API Token')->plainTextToken], Response::HTTP_UNAUTHORIZED);
+        return response()->json(['token' => $user->createToken('API Token')->plainTextToken], Response::HTTP_CREATED);
     }
 
     public function login(Request $request)
