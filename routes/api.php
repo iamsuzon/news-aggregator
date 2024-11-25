@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\ArticleManageController;
 use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Backend\UserController;
 use Illuminate\Http\Request;
@@ -11,6 +12,9 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/password/email', [AuthController::class, 'sendResetLinkEmail']);
     Route::post('/password/reset', [AuthController::class, 'reset']);
+
+    Route::get('/articles', [ArticleManageController::class, 'index']);
+    Route::get('/articles/{slug}', [ArticleManageController::class, 'show']);
 
     Route::prefix('user')->middleware('auth:sanctum')->group(function () {
         Route::get('/', [UserController::class, 'user']);

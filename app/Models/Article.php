@@ -36,10 +36,25 @@ class Article extends Model
         'content' => 'string',
         'url' => 'string',
         'image_url' => 'string',
-        'published_at' => 'timestamp',
+        'published_at' => 'datetime',
         'scraped_source' => 'string',
         'scraped_index' => 'integer',
         'status' => 'boolean',
         'visibility' => PostVisibilityEnum::class
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function source()
+    {
+        return $this->belongsTo(Source::class);
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
