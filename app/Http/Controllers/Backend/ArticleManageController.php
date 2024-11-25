@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
+use App\Models\UserPreference;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -56,5 +57,39 @@ class ArticleManageController extends Controller
         }
 
         return response()->json($article, Response::HTTP_OK);
+    }
+
+    public function personalizedFeed()
+    {
+        $preferences = UserPreference::where('user_id', auth()->id())->first();
+
+        if (!$preferences) {
+            return response()->json([
+                'message' => 'No preferences found. Please set your preferences first.'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $articles = Article::with(['category', 'source', 'author'])
+            ->when($preferences->preferred_sources, function ($query, $sources) {
+                return $query->whereIn('source_id', $sources);
+            })
+            ->when($preferences->preferred_categories, function ($query, $categories) {
+                return $query->whereIn('category_id', $categories);
+            })
+            ->when($preferences->preferred_authors, function ($query, $authors) {
+                return $query->whereIn('author_id', $authors);
+            })
+            ->latest('published_at')
+            ->paginate(10);
+
+        return response()->json([
+            'data' => ArticleResource::collection($articles->items()),
+            'pagination' => [
+                'current_page' => $articles->currentPage(),
+                'per_page' => $articles->perPage(),
+                'total' => $articles->total(),
+                'last_page' => $articles->lastPage(),
+            ],
+        ], Response::HTTP_OK);
     }
 }

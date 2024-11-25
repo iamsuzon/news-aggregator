@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\PasswordResetService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -22,7 +23,7 @@ class AuthController extends Controller
         ]);
 
         if ($validated->fails()) {
-            return response()->json(['errors' => $validated->errors()], 422);
+            return response()->json(['errors' => $validated->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data = $validated->validated();
@@ -33,7 +34,7 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        return response()->json(['token' => $user->createToken('API Token')->plainTextToken], 201);
+        return response()->json(['token' => $user->createToken('API Token')->plainTextToken], Response::HTTP_UNAUTHORIZED);
     }
 
     public function login(Request $request)
@@ -44,7 +45,7 @@ class AuthController extends Controller
         ]);
 
         if ($validated->fails()) {
-            return response()->json(['errors' => $validated->errors()], 422);
+            return response()->json(['errors' => $validated->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data = $validated->validated();
@@ -52,7 +53,7 @@ class AuthController extends Controller
         $user = User::where('email', $data['email'])->first();
 
         if (!$user || !Hash::check($data['password'], $user->password)) {
-            return response()->json(['error' => 'Invalid credentials'], 401);
+            return response()->json(['error' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
         }
 
         return response()->json(['token' => $user->createToken('API Token')->plainTextToken]);
@@ -72,10 +73,10 @@ class AuthController extends Controller
         $result = PasswordResetService::sendResentToken($data['email']);
 
         if ($result) {
-            return response()->json(['message' => 'Reset token sent '], 200);
+            return response()->json(['message' => 'Reset token sent '], Response::HTTP_OK);
         }
 
-        return response()->json(['error' => 'Failed to send reset token'], 500);
+        return response()->json(['error' => 'Failed to send reset token'], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     public function reset(Request $request)
@@ -87,7 +88,7 @@ class AuthController extends Controller
         ]);
 
         if ($validated->fails()) {
-            return response()->json(['errors' => $validated->errors()]);
+            return response()->json(['errors' => $validated->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data = $validated->validated();
