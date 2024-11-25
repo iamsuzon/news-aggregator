@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use App\Enums\PostVisibilityEnum;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'title',
         'slug',
@@ -55,6 +58,6 @@ class Article extends Model
 
     public function author()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Author::class);
     }
 }

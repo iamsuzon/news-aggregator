@@ -4,7 +4,6 @@ use App\Http\Controllers\Backend\ArticleManageController;
 use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\UserPreferenceController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
