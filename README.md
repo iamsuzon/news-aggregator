@@ -2,7 +2,10 @@
 
 ` git clone https://github.com/iamsuzon/news-aggregator.git `
 
-Open the project directory and rename **.env.example** file into **.env**
+### Then rename the following file:
+
+Open the project directory and rename
+` .env.example ` into ` .env `
 
 ### Open terminal in the project root directory and run the following commands:
 
