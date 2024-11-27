@@ -16,10 +16,9 @@ services:
   db:
     platform: "linux/amd64"
     image: mysql:latest
-    env_file:
-      - .env
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
       MYSQL_DATABASE: "news_database"
     ports:
       - "3305:3306"
