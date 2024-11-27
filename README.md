@@ -17,7 +17,8 @@ Then run the following command to run the container:
 
 ### Now run the following command to install the composer dependencies:
 
-` docker exec -it news-aggregator-web-1 composer update `
+1. ` docker exec -it news-aggregator-web-1 composer config process-timeout 1200 `
+2. ` docker exec -it news-aggregator-web-1 composer update `
 
 ### Now run the following command to generate the application key:
 
