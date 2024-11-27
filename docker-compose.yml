@@ -12,7 +12,7 @@ services:
       - .:/var/www/html
     depends_on:
       - db
-  
+
   db:
     platform: "linux/amd64"
     image: mysql:latest
@@ -20,11 +20,9 @@ services:
       - .env
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: "news_database"
     ports:
-      - "3307:3306"
+      - "3305:3306"
     volumes:
       - dbdata:/var/lib/mysql
 
